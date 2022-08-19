@@ -323,4 +323,15 @@ describe('backend-express-template routes', () => {
       pages: expect.any(Number),
     });
   });
+  it('#GET /api/v1/books/:id should get a book with id from params with nested author info', async () => {
+    const res = await request(app).get('/api/v1/books/1');
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({
+      id: 1,
+      title: 'American Gods',
+      releaseYear: 2001,
+      pages: 465,
+      Authors: expect.any(Array),
+    });
+  });
 });
