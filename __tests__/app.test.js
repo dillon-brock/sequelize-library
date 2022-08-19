@@ -4,107 +4,162 @@ const db = require('../lib/models');
 describe('backend-express-template routes', () => {
   beforeEach(async () => {
     try {
+      await db.Category.bulkCreate([
+        {
+          name: 'Fiction', // id: 1
+        },
+        {
+          name: 'Historical Fiction', // id: 2
+        },
+        {
+          name: 'Non-Fiction', // id: 3
+        },
+        {
+          name: 'Biography', // id: 4
+        },
+        {
+          name: 'Memoir', // id: 5
+        },
+        {
+          name: 'Poetry', // id: 6
+        },
+        {
+          name: 'Short Stories', // id: 7
+        },
+        {
+          name: 'Science Fiction', // id: 8
+        },
+        {
+          name: 'Fantasy', // id: 9
+        },
+        {
+          name: 'Cookbook', // id: 10
+        },
+        {
+          name: 'Reference', // id: 11
+        },
+      ]);
       await db.Book.bulkCreate([
         {
           title: 'American Gods',
           releaseYear: 2001,
           pages: 465,
+          CategoryId: 9,
         },
         {
           title: 'The Graveyard Book',
           releaseYear: 2008,
           pages: 312,
+          CategoryId: 9,
         },
         {
           title: 'Crying in H Mart',
           releaseYear: 2021,
           pages: 256,
+          CategoryId: 5,
         },
         {
           title: 'Educated',
           releaseYear: 2018,
           pages: 352,
+          CategoryId: 5,
         },
         {
           title: 'Kindred',
           releaseYear: 1979,
           pages: 264,
+          CategoryId: 9,
         },
         {
           title: 'Parable of the Sower',
           releaseYear: 1993,
           pages: 299,
+          CategoryId: 8,
         },
         {
           title: 'Xenogenesis',
           releaseYear: 1987,
           pages: 256,
+          CategoryId: 8,
         },
         {
           title: 'It Chooses You',
           releaseYear: 2011,
           pages: 218,
+          CategoryId: 3,
         },
         {
           title: 'The First Bad Man',
           releaseYear: 2015,
           pages: 304,
+          CategoryId: 1,
         },
         {
           title: 'The Thing Around Your Neck',
           releaseYear: 2009,
           pages: 300,
+          CategoryId: 7,
         },
         {
           title: 'The Goldfinch',
           releaseYear: 2013,
           pages: 771,
+          CategoryId: 1,
         },
         {
           title: 'All The Light We Cannot See',
           releaseYear: 2014,
           pages: 531,
+          CategoryId: 2,
         },
         {
           title: 'About Grace',
           releaseYear: 2004,
           pages: 432,
+          CategoryId: 1,
         },
         {
           title: 'The Book Thief',
           releaseYear: 2005,
           pages: 584,
+          CategoryId: 2,
         },
         {
           title: 'We Should All Be Feminists',
           releaseYear: 2014,
           pages: 64,
+          CategoryId: 3,
         },
         {
           title: 'The Little Book of Black Holes',
           releaseYear: 2017,
           pages: 200,
+          CategoryId: 3,
         },
         {
           title: 'The Bully Pulpit',
           releaseYear: 2013,
           pages: 928,
+          CategoryId: 4,
         },
         {
           // eslint-disable-next-line quotes
           title: "Electrical Engineers' HandBook",
           releaseYear: 1914,
           pages: 1028,
+          CategoryId: 11,
         },
         {
           title: 'The Bell Jar',
           releaseYear: 1963,
           pages: 244,
+          CategoryId: 6,
         },
         {
           title: 'Momofuku',
           releaseYear: 2009,
           pages: 304,
+          CategoryId: 10,
         },
       ]);
       await db.Author.bulkCreate([
@@ -318,6 +373,7 @@ describe('backend-express-template routes', () => {
     expect(res.status).toBe(200);
     expect(res.body[0]).toEqual({
       id: expect.any(Number),
+      CategoryId: expect.any(Number),
       title: expect.any(String),
       releaseYear: expect.any(Number),
       pages: expect.any(Number),
@@ -328,6 +384,7 @@ describe('backend-express-template routes', () => {
     expect(res.status).toBe(200);
     expect(res.body).toEqual({
       id: 1,
+      CategoryId: expect.any(Number),
       title: 'American Gods',
       releaseYear: 2001,
       pages: 465,
@@ -363,6 +420,7 @@ describe('backend-express-template routes', () => {
       title: 'Detransition, Baby',
       releaseYear: 2021,
       pages: 337,
+      CategoryId: 1,
     };
     const res = await request(app).post('/api/v1/books').send(newBook);
     expect(res.status).toBe(200);
@@ -376,6 +434,7 @@ describe('backend-express-template routes', () => {
       title: 'Stardust',
       releaseYear: 1997,
       pages: 256,
+      CategoryId: 9,
     };
     const originalAuthorResp = await request(app).get('/api/v1/authors/1');
     const originalBookLength = originalAuthorResp.body.Books.length;
