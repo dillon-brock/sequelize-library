@@ -407,4 +407,29 @@ describe('backend-express-template routes', () => {
       pob: 'New York City, NY',
     });
   });
+  it('#POST /api/v1/books/:id/authors should add a new author to book with id from params', async () => {
+    const newAuthor = {
+      firstName: 'Not',
+      lastName: 'Real',
+      dob: new Date('1970-01-01'),
+      pob: 'Fake City',
+    };
+    const originalBookResp = await request(app).get('/api/v1/books/1');
+    const originalAuthorLength = originalBookResp.body.Authors.length;
+
+    const res = await request(app)
+      .post('/api/v1/books/1/authors')
+      .send(newAuthor);
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({
+      id: expect.any(Number),
+      firstName: 'Not',
+      lastName: 'Real',
+      dob: expect.any(String),
+      pob: 'Fake City',
+    });
+
+    const bookResp = await request(app).get('/api/v1/books/1');
+    expect(bookResp.body.Authors.length).toEqual(originalAuthorLength + 1);
+  });
 });
