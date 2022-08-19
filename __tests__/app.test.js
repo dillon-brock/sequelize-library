@@ -358,4 +358,17 @@ describe('backend-express-template routes', () => {
     });
     expect(res.body.Books.length).toEqual(2);
   });
+  it('#POST /api/v1/books should add a new book without author association', async () => {
+    const newBook = {
+      title: 'Detransition, Baby',
+      releaseYear: 2021,
+      pages: 337,
+    };
+    const res = await request(app).post('/api/v1/books').send(newBook);
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({
+      id: expect.any(Number),
+      ...newBook,
+    });
+  });
 });
