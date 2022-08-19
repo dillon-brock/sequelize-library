@@ -2,7 +2,7 @@ const request = require('supertest');
 const app = require('../lib/app');
 const db = require('../lib/models');
 describe('backend-express-template routes', () => {
-  beforeEach(async () => {
+  beforeAll(async () => {
     try {
       await db.Category.bulkCreate([
         {
@@ -361,7 +361,6 @@ describe('backend-express-template routes', () => {
         },
       ]);
     } catch (e) {
-      // eslint-disable-next-line no-console
       console.log(e);
     }
   });
@@ -499,5 +498,15 @@ describe('backend-express-template routes', () => {
       id: expect.any(Number),
       name: expect.any(String),
     });
+  });
+  it('#GET /api/v1/categories/:id gets a category with id matching params and nested books array', async () => {
+    const res = await request(app).get('/api/v1/categories/3');
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({
+      id: 3,
+      name: 'Non-Fiction',
+      Books: expect.any(Array),
+    });
+    expect(res.body.Books.length).toEqual(3);
   });
 });
