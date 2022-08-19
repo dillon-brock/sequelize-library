@@ -509,4 +509,15 @@ describe('backend-express-template routes', () => {
     });
     expect(res.body.Books.length).toEqual(3);
   });
+  it('#POST /api/v1/categories adds a new category', async () => {
+    const newCategory = {
+      name: 'Thriller',
+    };
+    const res = await request(app).post('/api/v1/categories').send(newCategory);
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({
+      id: expect.any(Number),
+      name: 'Thriller',
+    });
+  });
 });
