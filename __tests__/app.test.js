@@ -342,7 +342,20 @@ describe('backend-express-template routes', () => {
       firstName: expect.any(String),
       lastName: expect.any(String),
       dob: expect.any(String),
-      pob: expect.any(String)
+      pob: expect.any(String),
     });
+  });
+  it('#GET /api/v1/authors/:id should get an author with id from params and nested books array', async () => {
+    const res = await request(app).get('/api/v1/authors/1');
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({
+      id: 1,
+      firstName: 'Neil',
+      lastName: 'Gaiman',
+      dob: expect.any(String),
+      pob: 'Portchester, UK',
+      Books: expect.any(Array),
+    });
+    expect(res.body.Books.length).toEqual(2);
   });
 });
