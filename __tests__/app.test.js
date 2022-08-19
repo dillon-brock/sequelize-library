@@ -390,4 +390,21 @@ describe('backend-express-template routes', () => {
     const authorResp = await request(app).get('/api/v1/authors/1');
     expect(authorResp.body.Books.length).toEqual(originalBookLength + 1);
   });
+  it('#POST /api/v1/authors should add new author with no book association', async () => {
+    const newAuthor = {
+      firstName: 'Test',
+      lastName: 'Author',
+      dob: new Date('1970-01-01'),
+      pob: 'New York City, NY',
+    };
+    const res = await request(app).post('/api/v1/authors').send(newAuthor);
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({
+      id: expect.any(Number),
+      firstName: 'Test',
+      lastName: 'Author',
+      dob: expect.any(String),
+      pob: 'New York City, NY',
+    });
+  });
 });
