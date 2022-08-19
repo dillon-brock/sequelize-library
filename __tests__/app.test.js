@@ -385,6 +385,7 @@ describe('backend-express-template routes', () => {
     expect(res.body).toEqual({
       id: 1,
       CategoryId: expect.any(Number),
+      Category: expect.any(Object),
       title: 'American Gods',
       releaseYear: 2001,
       pages: 465,
@@ -490,5 +491,13 @@ describe('backend-express-template routes', () => {
 
     const bookResp = await request(app).get('/api/v1/books/1');
     expect(bookResp.body.Authors.length).toEqual(originalAuthorLength + 1);
+  });
+  it('#GET /api/v1/categories gets a list of categories', async () => {
+    const res = await request(app).get('/api/v1/categories');
+    expect(res.status).toBe(200);
+    expect(res.body[0]).toEqual({
+      id: expect.any(Number),
+      name: expect.any(String),
+    });
   });
 });
