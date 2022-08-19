@@ -371,4 +371,23 @@ describe('backend-express-template routes', () => {
       ...newBook,
     });
   });
+  it('#POST /api/v1/authors/:id/books should add a new book associated with author with id from params', async () => {
+    const newBook = {
+      title: 'Stardust',
+      releaseYear: 1997,
+      pages: 256,
+    };
+    const originalAuthorResp = await request(app).get('/api/v1/authors/1');
+    const originalBookLength = originalAuthorResp.body.Books.length;
+    const res = await request(app)
+      .post('/api/v1/authors/1/books')
+      .send(newBook);
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({
+      id: expect.any(Number),
+      ...newBook,
+    });
+    const authorResp = await request(app).get('/api/v1/authors/1');
+    expect(authorResp.body.Books.length).toEqual(originalBookLength + 1);
+  });
 });
