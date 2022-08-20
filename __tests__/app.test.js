@@ -162,6 +162,28 @@ describe('backend-express-template routes', () => {
           CategoryId: 10,
         },
       ]);
+      await db.Rental.bulkCreate([
+        {
+          BookId: 1,
+          checkoutDate: new Date('2010-07-24'),
+          returnDate: new Date('2010-08-01'),
+        },
+        {
+          BookId: 1,
+          checkoutDate: new Date('2012-02-07'),
+          returnDate: new Date('2012-02-14'),
+        },
+        {
+          BookId: 2,
+          checkoutDate: new Date('2019-04-29'),
+          returnDate: new Date('2019-06-01'),
+        },
+        {
+          BookId: 2,
+          checkoutDate: new Date('2017-11-14'),
+          returnDate: new Date('2017-12-03'),
+        },
+      ]);
       await db.Author.bulkCreate([
         {
           firstName: 'Neil',
@@ -361,6 +383,7 @@ describe('backend-express-template routes', () => {
         },
       ]);
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.log(e);
     }
   });
@@ -518,6 +541,17 @@ describe('backend-express-template routes', () => {
     expect(res.body).toEqual({
       id: expect.any(Number),
       name: 'Thriller',
+    });
+  });
+  it('#GET /api/v1/rentals gets a list of all rentals with book titles and authors', async () => {
+    const res = await request(app).get('/api/v1/rentals');
+    expect(res.status).toBe(200);
+    expect(res.body[0]).toEqual({
+      id: expect.any(Number),
+      BookId: expect.any(Number),
+      checkoutDate: expect.any(String),
+      returnDate: expect.any(String),
+      Book: expect.any(Object),
     });
   });
 });
