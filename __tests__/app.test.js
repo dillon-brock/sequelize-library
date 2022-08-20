@@ -454,6 +454,20 @@ describe('backend-express-template routes', () => {
       Category: expect.any(Object),
     });
   });
+  it('#GET /api/v1/books/search should return a list of books with authors from search params', async () => {
+    const res = await request(app).get('/api/v1/books/search?author=zauner');
+    expect(res.status).toBe(200);
+    expect(res.body[0]).toEqual({
+      id: expect.any(Number),
+      title: 'Crying in H Mart',
+      releaseYear: 2021,
+      pages: 256,
+      Authors: expect.any(Array),
+      Category: {
+        name: 'Memoir',
+      },
+    });
+  });
   it('#GET /api/v1/authors should get a list of authors', async () => {
     const res = await request(app).get('/api/v1/authors');
     expect(res.status).toBe(200);
