@@ -442,6 +442,18 @@ describe('backend-express-template routes', () => {
       Authors: expect.any(Array),
     });
   });
+  it('#GET /api/v1/books/search should return a list of books with titles from search params', async () => {
+    const res = await request(app).get('/api/v1/books/search?title=america');
+    expect(res.status).toBe(200);
+    expect(res.body[0]).toEqual({
+      id: expect.any(Number),
+      title: 'American Gods',
+      releaseYear: 2001,
+      pages: 465,
+      Authors: expect.any(Array),
+      Category: expect.any(Object),
+    });
+  });
   it('#GET /api/v1/authors should get a list of authors', async () => {
     const res = await request(app).get('/api/v1/authors');
     expect(res.status).toBe(200);
