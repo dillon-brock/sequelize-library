@@ -548,10 +548,23 @@ describe('backend-express-template routes', () => {
     expect(res.status).toBe(200);
     expect(res.body[0]).toEqual({
       id: expect.any(Number),
-      BookId: expect.any(Number),
       checkoutDate: expect.any(String),
       returnDate: expect.any(String),
       Book: expect.any(Object),
     });
+  });
+  it('#GET /api/v1/rentals/:id gets a rental with id matching params and all book, author, and genre info', async () => {
+    const res = await request(app).get('/api/v1/rentals/1');
+    console.log(res.body);
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({
+      id: 1,
+      BookId: 1,
+      checkoutDate: expect.any(String),
+      returnDate: expect.any(String),
+      Book: expect.any(Object),
+    });
+    expect(res.body.Book.Authors).toEqual(expect.any(Array));
+    expect(res.body.Book.Category).toEqual(expect.any(Object));
   });
 });
